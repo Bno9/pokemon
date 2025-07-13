@@ -1,0 +1,35 @@
+[
+  {
+    "nome": "Pikachu",
+    "level": 0,
+    "vida_max": 0,
+    "vida": 0,
+    "tipo": "Elétrico",
+    "ataques": [
+      {"nome": "Choque do Trovão", "dano": 0, "tipo": "Elétrico"},
+      {"nome": "Raio", "dano": 0, "tipo": "Elétrico"}
+    ]
+  },
+  {
+    "nome": "Charmander",
+    "level": 0,
+    "vida_max": 0,
+    "vida": 0,
+    "tipo": "Fogo",
+    "ataques": [
+      {"nome": "Brasas", "dano": 0, "tipo": "Fogo"},
+      {"nome": "Arranhão", "dano": 0, "tipo": "Normal"}
+    ]
+  },
+  {
+    "nome": "Squirtle",
+    "level": 0,
+    "vida_max": 0,
+    "vida":  0,
+    "tipo": "Agua",
+    "ataques": [
+        {"nome": "Splash", "dano": 0, "tipo": "Agua"},
+        {"nome": "Agua", "dano": 0, "tipo": "Agua"}
+    ]
+  }
+]
