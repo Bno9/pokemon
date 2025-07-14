@@ -81,6 +81,13 @@ for p in pokemons_json:
 
     objeto_pokemon = Pokemon(p["nome"], p["level"], p["xp"], p["vida_max"], p["vida"], p["vida"], p["tipo"], ataques_do_pokemon)
     pokemons_lista.append(objeto_pokemon)
+
+#validação de escolha de ataque
+def escolha_ataque(self, escolha):
+    if escolha < 0 or escolha > len(self.ataques) - 1:
+        return False
+    else:
+        return self.ataques[escolha]
     
 #função principal do jogo
 def main():
@@ -98,18 +105,19 @@ def main():
 
         #captura de pokemon
         if opcao == 1:
-            while True:
 
-                pokemon_aleatorio = pokemons_lista[random.randint(0, len(pokemons_lista) - 1)]
-                level = random.randint(3, 20)
-                vida_max = random.randint(3,7) * level
-                vida_base = random.randint(10,20)
-                
+            pokemon_aleatorio = pokemons_lista[random.randint(0, len(pokemons_lista) - 1)]
+            level = random.randint(3, 20)
+            vida_max = random.randint(3,7) * level
+            vida_base = random.randint(10,20)
+
+            while True:
                 try:
                     captura = int(input(f"você encontrou um {pokemon_aleatorio.nome}, de level {level}. Deseja captura-lo?\n"
                                     "Digite 1 para sim e 2 para fugir\n"))
                 except ValueError:
                     print("Utilize apenas numeros")
+
                 if captura == 1:
                     pokemon_aleatorio.level = level
                     pokemon_aleatorio.vida_max = vida_max
@@ -117,21 +125,30 @@ def main():
                     pokemon_aleatorio.vida = pokemon_aleatorio.vida_max
                     pokedex[pokemon_aleatorio.nome] = pokemon_aleatorio
                     break
-                else:
+
+                elif captura == 2:
                     break
 
+                else:
+                    print("Selecione uma das opções disponiveis")
+
         #ver pokemons capturados
-        if opcao == 2:
+        elif opcao == 2 and pokedex:
             for nome, pokemon in pokedex.items():
                 print(pokemon)
 
         #deletar pokemon da pokedex
-        if opcao == 3:
+        elif opcao == 3:
             pokemon = input("Digite o nome do pokemon que deseja soltar\n")
+
+            if pokemon not in pokedex:
+                print("Esse pokemon não existe na sua pokedex")
+                continue
+
             del pokedex[pokemon]
 
         #lutar
-        if opcao == 4 and pokedex:
+        elif opcao == 4 and pokedex:
 
             #definindo qual pokemon ira aparecer, e os stats
             pokemon_aleatorio = pokemons_lista[random.randint(0, len(pokemons_lista) - 1)]
@@ -156,35 +173,49 @@ def main():
                     for i, ataque in enumerate(primeiro_pokemon.ataques):
                         print(f"{i}  - {ataque}")
 
-                    escolha = int(input("Escolha qual ataque usar (numero):"))
+                    try:
+                        escolha = int(input("Escolha qual ataque usar (numero):"))
                     
-                    ataque_escolhido = primeiro_pokemon.ataques[escolha]
+                    except ValueError:
+                        print("Digite apenas numeros inteiros")
 
-                    pokemon_aleatorio.vida -= ataque_escolhido.dano
-                    print(f"{pokemon_aleatorio.nome} tomou {ataque_escolhido.dano} de dano e ficou com {pokemon_aleatorio.vida} de vida.")
+                    if escolha_ataque(primeiro_pokemon, escolha):
+                        ataque_escolhido = primeiro_pokemon.ataques[escolha]
 
-                    ataque_inimigo = pokemon_aleatorio.ataques[random.randint(0,1)]
+                        pokemon_aleatorio.vida -= ataque_escolhido.dano
+                        print(f"{pokemon_aleatorio.nome} tomou {ataque_escolhido.dano} de dano e ficou com {pokemon_aleatorio.vida} de vida.")
 
-                    primeiro_pokemon.vida -= ataque_inimigo.dano
-                    print(f"{pokemon_aleatorio.nome} usou {ataque_inimigo.nome} e deu {ataque_inimigo.dano} de dano, seu pokemon ficou com {primeiro_pokemon.vida} de vida.")
+                        ataque_inimigo = pokemon_aleatorio.ataques[random.randint(0,1)]
 
-                    if pokemon_aleatorio.vida <= 0:
-                        print(f"você derrotou {pokemon_aleatorio.nome} e ganhou {xp} de experiencia")
-                        primeiro_pokemon.ganhar_xp(xp)
-                        break
+                        primeiro_pokemon.vida -= ataque_inimigo.dano
+                        print(f"{pokemon_aleatorio.nome} usou {ataque_inimigo.nome} e deu {ataque_inimigo.dano} de dano, seu pokemon ficou com {primeiro_pokemon.vida} de vida.")
 
-                    elif primeiro_pokemon.vida <=0:
-                        print(f"Você foi derrotado por {pokemon_aleatorio.nome}")
-                        primeiro_pokemon.curar_pokemon()
-                        # primeiro_pokemon = next(iter(pokedex)) aqui eu queria que continuasse mandando o proximo pokemon, mas nao sei se essa seria a melhor logica
-                        break
+                        if pokemon_aleatorio.vida <= 0:
+                            print(f"você derrotou {pokemon_aleatorio.nome} e ganhou {xp} de experiencia")
+                            primeiro_pokemon.ganhar_xp(xp)
+                            break
+
+                        elif primeiro_pokemon.vida <=0:
+                            print(f"Você foi derrotado por {pokemon_aleatorio.nome}")
+                            primeiro_pokemon.curar_pokemon()
+                            # primeiro_pokemon = next(iter(pokedex)) aqui eu queria que continuasse mandando o proximo pokemon, mas nao sei se essa seria a melhor logica
+                            break
+
+                    else:
+                        print("Escolha uma opção válida")
 
             #fugir
-            if luta == 2:
-                pass
+            elif luta == 2:
+                continue
+
+            else:
+                print("Escolha uma das opções disponiveis")
 
         #sair do jogo
-        if opcao == 5:
+        elif opcao == 5:
             break
 
+        else:
+            print("Escolha uma das opções disponiveis")
+            
 main()
