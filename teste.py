@@ -26,9 +26,11 @@ class Pokemon:
         self.tipo = tipo
         self.ataques = ataques
 
+    #xp necessario para upar
     def xp_proximo_nivel(self):
-        return int(100 * (self.level ** 1.5))
+        return int(100 * (self.level ** 1.2))
     
+    #metodo de ganhar xp
     def ganhar_xp(self, quantidade):
         self.xp += quantidade
         while self.xp >= self.xp_proximo_nivel():
@@ -36,10 +38,16 @@ class Pokemon:
             self.level += 1
             print(f"{self.nome} subiu para o level {self.level}!")
             self.vida_max = int(self.vida_base * (self.level ** 1.2))
+            self.vida = self.vida_max
 
+            for ataque in self.ataques:
+                ataque.dano = int(ataque.dano * (1 + 0.05 * self.level))
+
+    #metodo pra curar
     def curar_pokemon(self):
         self.vida = self.vida_max
 
+    #formatação do print
     def __str__(self):
         return f"{self.nome} (Level {self.level}) - Tipo: {self.tipo}\nStatus:\nVida_max: {self.vida_max}\nVida_atual: {self.vida}\nXP: {int(self.xp)}\nXP necessário pro próximo nivel:{self.xp_proximo_nivel()}"
 
@@ -51,6 +59,7 @@ class Ataques:
         self.dano = dano
         self.tipo = tipo
 
+    #formatação do print
     def __str__(self):
         return f"{self.nome} ({self.tipo}) - {self.dano} de dano"
 
@@ -122,7 +131,9 @@ def main():
             del pokedex[pokemon]
 
         #lutar
-        if opcao == 4:
+        if opcao == 4 and pokedex:
+
+            #definindo qual pokemon ira aparecer, e os stats
             pokemon_aleatorio = pokemons_lista[random.randint(0, len(pokemons_lista) - 1)]
             level = random.randint(3, 20)
             vida = random.randint(5,11) * level
@@ -132,14 +143,12 @@ def main():
                          "1 para sim e 2 para não\n"))
 
             if luta == 1:
-                #definindo pokemons da luta
+                #definindo pokemon da luta
                 nome_pokemon = next(iter(pokedex))
                 primeiro_pokemon = pokedex[nome_pokemon]
                 print(f"você jogou seu {primeiro_pokemon.nome}")
 
-                #xp = int(random.randint(8, 60) * level)
-                xp = 50000
-
+                xp = int(random.randint(80, 600) * level)
 
                 #começo da luta
                 while True:
@@ -160,20 +169,20 @@ def main():
                     print(f"{pokemon_aleatorio.nome} usou {ataque_inimigo.nome} e deu {ataque_inimigo.dano} de dano, seu pokemon ficou com {primeiro_pokemon.vida} de vida.")
 
                     if pokemon_aleatorio.vida <= 0:
-                        primeiro_pokemon.ganhar_xp(xp)
                         print(f"você derrotou {pokemon_aleatorio.nome} e ganhou {xp} de experiencia")
+                        primeiro_pokemon.ganhar_xp(xp)
                         break
 
                     elif primeiro_pokemon.vida <=0:
                         print(f"Você foi derrotado por {pokemon_aleatorio.nome}")
-                        primeiro_pokemon.vida += primeiro_pokemon.vida_max
+                        primeiro_pokemon.curar_pokemon()
                         # primeiro_pokemon = next(iter(pokedex)) aqui eu queria que continuasse mandando o proximo pokemon, mas nao sei se essa seria a melhor logica
                         break
 
             #fugir
             if luta == 2:
-                break
-            
+                pass
+
         #sair do jogo
         if opcao == 5:
             break
