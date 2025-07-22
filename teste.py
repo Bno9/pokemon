@@ -63,7 +63,7 @@ class Pokemon:
     def curar_pokemon(self):
         self.vida = self.vida_max
 
-    #definindo vantagens (nao está funcionando ainda)
+    #definindo vantagens
     def vantagem_desvantagem(self, tipo_ataque, tipo_defensor):
         for tipos_ataque in tipo_ataque:
             for tipos_defesa in tipo_defensor:
