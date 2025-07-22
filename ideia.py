@@ -1,11 +1,4 @@
-#Ideias ainda nao implementadas
-# Criar alguma coisa pra armazenar os ataques e dano de cada um, além da vida dos pokemons, assim então, podendo fazer um sistema de combate
-# Pensei em algo tipo outra classe só pra ataque, mas nao sei exatamente como funciona a POO, vou dar uma pesquisada antes
-# Outra coisa é melhorar na POO pra ver como eu faço uma adição mais rapida e facil dos pokemons
-# Também to pensando em usar uma fastapi de pokemon
-# E por ultimo, adicionar um banco de dados (to pensando no sqlite, mas acho q ele só funciona pra api)
-# 
-# 
+#Ideia inicial do jogo 
 # 
 import random 
 
@@ -101,34 +94,3 @@ def main():
             break
 
 main()
-
-
-
-
-
-
-
-#
-#class Animal:
-#    def __init__(self, nome, idade):
-#       self.nome = nome
- #       self.idade = idade
-#
- #   def emitir_som(self):
-  #      print("O animal emitiu um som genérico")
-#
-#class Cachorro(Animal):
- #   def emitir_som(self):
-  #      return f"O {self.nome} latiu"
-#
-#class Gato(Animal):
- #   def emitir_som(self):
- #       return f"A {self.nome} miou"
-
-# Criando instâncias das classes
-#cachorro = Cachorro("Whisky", 5)
-#gato = Gato("Elle", 2)
-
-# Exibindo os sons dos animais
-#print(cachorro.emitir_som())
-#print(gato.emitir_som())

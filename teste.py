@@ -1,11 +1,27 @@
 import random 
 import json
 
+#Toda a base do jogo foi feita, agora vou tentar usar poke api e depois fazer um banco de dados
+
 pokemons_json = [] #formatação do json pra lista dentro do código
 
 ataques = [] #por enquanto não tem utilidade, a não ser pra mostrar todos ataques existentes
 
 pokemons_lista = [] #formatação da lista json pra objetos da classe pokemon
+
+vantagens = {
+    "Água": ["Fogo", "Pedra"],
+    "Fogo": ["Planta", "Gelo"],
+    "Planta": ["Água", "Pedra"],
+    "Elétrico": ["Água", "Voador"],
+    "Pedra": ["Fogo", "Inseto"],
+    "Lutador": ["Pedra", "Normal"],
+    "Fantasma": ["Psíquico", "Fantasma"],
+    "Normal": [],
+    "Aço": ["Pedra", "Gelo"],
+    "Psíquico": ["Lutador", "Venenoso"],
+    "Fada": ["Lutador", "Dragão", "Sombrio"],
+}
 
 pokedex = {} #Pokedex é onde eu to salvando os pokemons capturados por enquanto
 
@@ -26,7 +42,7 @@ class Pokemon:
         self.tipo = tipo
         self.ataques = ataques
 
-    #xp necessario para upar
+    #xp necessario para upar (esse metodo é chamado no metodo de ganhar xp)
     def xp_proximo_nivel(self):
         return int(100 * (self.level ** 1.2))
     
@@ -47,6 +63,37 @@ class Pokemon:
     def curar_pokemon(self):
         self.vida = self.vida_max
 
+    #definindo vantagens (nao está funcionando ainda)
+    def vantagem_desvantagem(self, tipo_ataque, tipo_defensor):
+        for tipos_ataque in tipo_ataque:
+            for tipos_defesa in tipo_defensor:
+                if tipos_defesa in vantagens.get(tipos_ataque, []):
+                    return 2
+        for tipos_ataque in tipo_ataque:
+            for tipos_defesa in tipo_defensor:
+                if tipos_ataque in vantagens.get(tipos_defesa, []):
+                    return 0.5
+        return 1
+
+    #ainda to criando isso aqui, mas é pra substituir aquele monte de linha na parte da luta
+    def atacar(self, escolha, pokemon_inimigo):
+
+        if escolha_ataque(self, escolha):
+            ataque_escolhido = self.ataques[escolha]
+
+            multiplicador = self.vantagem_desvantagem(ataque_escolhido.tipo, pokemon_inimigo.tipo)
+
+            pokemon_inimigo.vida -= ataque_escolhido.dano * multiplicador
+            print(f"{pokemon_inimigo.nome} tomou {ataque_escolhido.dano * multiplicador} de dano e ficou com {pokemon_inimigo.vida} de vida.")
+
+            ataque_inimigo = pokemon_inimigo.ataques[random.randint(0,1)]
+
+            multiplicador = self.vantagem_desvantagem(ataque_inimigo.tipo, self.tipo)
+
+            self.vida -= ataque_inimigo.dano * multiplicador
+            print(f"{pokemon_inimigo.nome} usou {ataque_inimigo.nome} e deu {ataque_inimigo.dano * multiplicador} de dano, seu pokemon ficou com {self.vida} de vida.")
+
+            
     #formatação do print
     def __str__(self):
         return f"{self.nome} (Level {self.level}) - Tipo: {self.tipo}\nStatus:\nVida_max: {self.vida_max}\nVida_atual: {self.vida}\nXP: {int(self.xp)}\nXP necessário pro próximo nivel:{self.xp_proximo_nivel()}"
@@ -75,8 +122,8 @@ for p in pokemons_json:
     ataques_do_pokemon = []
     for i in p["ataques"]:
         dano_base = random.randint(10,30)
-        dano = random.randint(30,50)
-        ataque_obj = Ataques(i["nome"], dano_base, dano, i["tipo"])
+        dano = random.randint(15,50)
+        ataque_obj = Ataques(i["nome"], dano_base, dano, [i["tipo"] if isinstance(i["tipo"], str) else i["tipo"]])
         ataques_do_pokemon.append(ataque_obj)
 
     objeto_pokemon = Pokemon(p["nome"], p["level"], p["xp"], p["vida_max"], p["vida"], p["vida"], p["tipo"], ataques_do_pokemon)
@@ -92,12 +139,13 @@ def escolha_ataque(self, escolha):
 #função principal do jogo
 def main():
     while True:
+        
          
         try:
             opcao = int(input("O que deseja fazer?\n" 
             "1- capturar pokemon\n" 
             "2- olhar pokedex\n" 
-            "3- desescravizar um pokemon\n" 
+            "3- soltar um pokemon\n" 
             "4- lutar\n"
             "5- sair\n"))
         except ValueError:
@@ -156,7 +204,7 @@ def main():
             vida = random.randint(5,11) * level
             pokemon_aleatorio.vida = vida
 
-            luta = int(input(f"Um {pokemon_aleatorio.nome}, de level {level} apareceu. Deseja lutar?\n"
+            luta = int(input(f"Um {pokemon_aleatorio.nome}, de level {level} e {pokemon_aleatorio.vida} de vida apareceu. Deseja lutar?\n"
                          "1 para sim e 2 para não\n"))
 
             if luta == 1:
@@ -179,27 +227,18 @@ def main():
                     except ValueError:
                         print("Digite apenas numeros inteiros")
 
-                    if escolha_ataque(primeiro_pokemon, escolha):
-                        ataque_escolhido = primeiro_pokemon.ataques[escolha]
+                    primeiro_pokemon.atacar(escolha, pokemon_aleatorio) #chama o metodo que faz o ataque e ja confere a vantagem
 
-                        pokemon_aleatorio.vida -= ataque_escolhido.dano
-                        print(f"{pokemon_aleatorio.nome} tomou {ataque_escolhido.dano} de dano e ficou com {pokemon_aleatorio.vida} de vida.")
+                    if pokemon_aleatorio.vida <= 0:
+                        print(f"você derrotou {pokemon_aleatorio.nome} e ganhou {xp} de experiencia")
+                        primeiro_pokemon.ganhar_xp(xp)
+                        break
 
-                        ataque_inimigo = pokemon_aleatorio.ataques[random.randint(0,1)]
-
-                        primeiro_pokemon.vida -= ataque_inimigo.dano
-                        print(f"{pokemon_aleatorio.nome} usou {ataque_inimigo.nome} e deu {ataque_inimigo.dano} de dano, seu pokemon ficou com {primeiro_pokemon.vida} de vida.")
-
-                        if pokemon_aleatorio.vida <= 0:
-                            print(f"você derrotou {pokemon_aleatorio.nome} e ganhou {xp} de experiencia")
-                            primeiro_pokemon.ganhar_xp(xp)
-                            break
-
-                        elif primeiro_pokemon.vida <=0:
-                            print(f"Você foi derrotado por {pokemon_aleatorio.nome}")
-                            primeiro_pokemon.curar_pokemon()
-                            # primeiro_pokemon = next(iter(pokedex)) aqui eu queria que continuasse mandando o proximo pokemon, mas nao sei se essa seria a melhor logica
-                            break
+                    elif primeiro_pokemon.vida <=0:
+                        print(f"Você foi derrotado por {pokemon_aleatorio.nome}")
+                        primeiro_pokemon.curar_pokemon()
+                        #primeiro_pokemon = next(iter(pokedex)) #aqui eu queria que continuasse mandando o proximo pokemon, mas nao sei se essa seria a melhor logica
+                        break
 
                     else:
                         print("Escolha uma opção válida")
