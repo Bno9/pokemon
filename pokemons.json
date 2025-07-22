@@ -5,9 +5,11 @@
     "xp": 0,
     "vida_max": 0,
     "vida": 0,
-    "tipo": "Elétrico",
+    "tipo": ["Elétrico"],
     "ataques": [
-      {"nome": "Choque do Trovão", "dano": 0, "tipo": "Elétrico"},
+      {"nome": "Choque do Trovão", 
+      "dano": 0, 
+      "tipo": "Elétrico"},
       {"nome": "Raio", "dano": 0, "tipo": "Elétrico"},
       {"nome": "Investida", "dano": 0, "tipo": "Normal"},
       {"nome": "Cauda de Ferro", "dano": 0, "tipo": "Aço"}
@@ -19,7 +21,7 @@
     "xp": 0,
     "vida_max": 0,
     "vida": 0,
-    "tipo": "Fogo",
+    "tipo": ["Fogo"],
     "ataques": [
       {"nome": "Lança-chamas", "dano": 0, "tipo": "Fogo"},
       {"nome": "Arranhão", "dano": 0, "tipo": "Normal"},
@@ -33,7 +35,7 @@
     "xp": 0,
     "vida_max": 0,
     "vida": 0,
-    "tipo": "Água",
+    "tipo": ["Água"],
     "ataques": [
       {"nome": "Jato de água", "dano": 0, "tipo": "Água"},
       {"nome": "Investida", "dano": 0, "tipo": "Normal"},
@@ -47,7 +49,7 @@
     "xp": 0,
     "vida_max": 0,
     "vida": 0,
-    "tipo": "Planta",
+    "tipo": ["Planta"],
     "ataques": [
       {"nome": "Folha navalha", "dano": 0, "tipo": "Planta"},
       {"nome": "Investida", "dano": 0, "tipo": "Normal"},
@@ -61,7 +63,7 @@
     "xp": 0,
     "vida_max": 0,
     "vida": 0,
-    "tipo": "Normal",
+    "tipo": ["Normal"],
     "ataques": [
       {"nome": "Canto", "dano": 0, "tipo": "Fada"},
       {"nome": "Dorme-sono", "dano": 0, "tipo": "Normal"},
@@ -75,7 +77,7 @@
     "xp": 0,
     "vida_max": 0,
     "vida": 0,
-    "tipo": "Água",
+    "tipo": ["Água"],
     "ataques": [
       {"nome": "Confusão", "dano": 0, "tipo": "Psíquico"},
       {"nome": "Jato de água", "dano": 0, "tipo": "Água"},
@@ -89,7 +91,7 @@
     "xp": 0,
     "vida_max": 0,
     "vida": 0,
-    "tipo": "Normal",
+    "tipo": ["Normal"],
     "ataques": [
       {"nome": "Arranhão", "dano": 0, "tipo": "Normal"},
       {"nome": "Golpe de casco", "dano": 0, "tipo": "Normal"},
@@ -103,7 +105,7 @@
     "xp": 0,
     "vida_max": 0,
     "vida": 0,
-    "tipo": "Lutador",
+    "tipo": ["Lutador"],
     "ataques": [
       {"nome": "Soco", "dano": 0, "tipo": "Lutador"},
       {"nome": "Cabeçada", "dano": 0, "tipo": "Normal"},
@@ -117,7 +119,7 @@
     "xp": 0,
     "vida_max": 0,
     "vida": 0,
-    "tipo": "Pedra",
+    "tipo": ["Pedra"],
     "ataques": [
       {"nome": "Lança de pedra", "dano": 0, "tipo": "Pedra"},
       {"nome": "Investida", "dano": 0, "tipo": "Normal"},
@@ -131,7 +133,7 @@
     "xp": 0,
     "vida_max": 0,
     "vida": 0,
-    "tipo": "Fantasma",
+    "tipo": ["Fantasma"],
     "ataques": [
       {"nome": "Sombra noturna", "dano": 0, "tipo": "Fantasma"},
       {"nome": "Confusão", "dano": 0, "tipo": "Psíquico"},
@@ -145,7 +147,7 @@
     "xp": 0,
     "vida_max": 0,
     "vida": 0,
-    "tipo": "Normal",
+    "tipo": ["Normal"],
     "ataques": [
       {"nome": "Investida", "dano": 0, "tipo": "Normal"},
       {"nome": "Arranhão", "dano": 0, "tipo": "Normal"},
